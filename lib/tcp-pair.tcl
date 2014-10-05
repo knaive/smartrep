@@ -149,13 +149,12 @@ CS_pair instproc create_flow {s ct flowsize } {
         if {[expr $src/$k]==[expr $dst/$k]} {
             set count 0
         }
+        # debug
+        puts "$src to $dst $flowsize $count"
     } else {
         set count $repflow_maxnum
     }
 
-    # debug
-    #puts "$src to $dst $flowsize $count"
-    
     while { $is_mice && $count>0 } {
         $self set flows($flow_num) [new TCP_pair]
         $flows($flow_num) setup server $src $dst $ct $flowsize [expr $origin_flow_num + $var -1] 1 $is_mice

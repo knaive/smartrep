@@ -80,7 +80,6 @@ proc avg_normfct {filenm miceflow_thresh link_rate {percent 1}} {
                 if {$normfct<1} {
                     puts "$normfct,$pkts,$fct"
                 }
-                
 
                 if {[lindex $lst 5] <= $miceflow_thresh } {
                         set mice_avg [expr $mice_avg + $normfct]

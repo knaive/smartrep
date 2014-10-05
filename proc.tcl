@@ -1,6 +1,5 @@
 source lib/data-process.tcl
 
-
 # compute the average fct of several runs of simulation
 proc avg {src} {
     exec sort -t , -g -k 1 $src -o $src
@@ -34,20 +33,19 @@ proc avg {src} {
 
 # how to call proc.tcl:
 # ns proc.tcl stat_topdir list1 list2 list3 ...
-# list = "repnum routing_method"
+# stat_topdir = stat-$sim_end-$load_type
+# listN = "repnum routing_method"
 set stat_topdir [lindex $argv 0]
 
 set lst [split $stat_topdir "-"]
 set sim_end [lindex $lst 1]
 set load_type [lindex $lst 2]
-set rm [lindex $lst 3]
 
 set len [llength $lst]
-set out_topdir "plot-$sim_end-$load_type-$rm"
+set out_topdir "/home/wfg/plot/plot-$sim_end-$load_type"
 for {set i 4} {$i < $len} {incr i} {
     set out_topdir "$out_topdir-[lindex $lst $i]"
 }
-
 for {set i 1} {$i < $argc} {incr i} {
     lappend plot_lst [lindex $argv $i]
 }
@@ -55,7 +53,6 @@ for {set i 1} {$i < $argc} {incr i} {
 set run_times 5
 set percent 1
 set link_rate 10000
-
 for {set i 1} {$i <= $run_times} {incr i} {
     set stat_dir "$stat_topdir/stat$i-$load_type-$sim_end" 
     set plot_dir "$out_topdir/plot_data$i"

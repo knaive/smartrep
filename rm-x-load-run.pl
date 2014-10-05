@@ -6,10 +6,10 @@ $sim_end = 3000; #num of flows
 @load = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8);
 #@load = (0.1, 0.2, 0.3);
 #@load = (0.1,0.8);
-@repflow_maxnum =(1);
+@repflow_maxnum =(0);
 $DCTCP = 0;
-$smartRep = 0;
-$workload_type = 1;
+$smartRep = 1;
+$workload_type = 0;
 
 # for DCTCP workload
 $workload = "cdf/CDF_web-search.tcl";
@@ -43,7 +43,7 @@ $port_num = 8;
 #@routing_method = (0,1,2,3);
 #@routing_method = (0,1,2);
 #@routing_method = (1,2);
-@routing_method = (1);
+@routing_method = (0,1);
 
 # link_rate Mbps
 $link_rate = 10000;
@@ -53,22 +53,22 @@ $host_delay = 0.0000025;
 $queueSize = 225;
 $miceflow_thresh = 100;
 
-$clear = 0;
-if ($clear == 1) {
-    `rm -f plot_data rude_data`;
-}
+#$clear = 0;
+#if ($clear == 1) {
+    #`rm -f plot_data rude_data`;
+#}
 
 ##########################################
 # Run Simulations
 ##########################################
 
 # create workload before the first process spawn
-for(my $r = 1; $r<=$run; $r++) {
-    foreach (@load) {
-        my $cur_load = $_;
-        create_workload($topo,$sim_end,$link_rate,$spine_num,$tor_num,$spt,$port_num,$cur_load,$r,$meanFlowSize,$workload);
-    }
-}
+#for(my $r = 1; $r<=$run; $r++) {
+    #foreach (@load) {
+        #my $cur_load = $_;
+        #create_workload($topo,$sim_end,$link_rate,$spine_num,$tor_num,$spt,$port_num,$cur_load,$r,$meanFlowSize,$workload);
+    #}
+#}
 
 my $begin = qx(date +%s);
 my $pid = 0;
@@ -105,7 +105,7 @@ sub simulate{
     my ($cur_load,$rm,$run) = @_;
     my ($seed1,$seed2,$seed3) = get_seed($run);
 
-    $output_dir = "/home/wfg/Desktop/stat-$sim_end-$type-1-1/stat$run-$type-$sim_end";
+    $output_dir = "/home/wfg/Desktop/stat-$sim_end-$type/stat$run-$type-$sim_end";
 
     my $flow_trace_dir = "$output_dir/trace$run-$sim_end-$rm-$type";
     if (!(-e $flow_trace_dir)) {`mkdir -p $flow_trace_dir`; }

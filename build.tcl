@@ -220,9 +220,9 @@ for {set i 1} {$i <= $miceflow_thresh} {incr i} {
     set repNum($i) 0
 }
 if {[string compare $cdf_file "cdf/CDF_web-search.tcl"] == 0} {
-    set repNumFile "cdf/repnum-web-[expr $equalpath_num-1]-$load.dat"
+    set repNumFile "cdf/repnum-web-[expr $equalpath_num-1]-0.1.dat"
 } elseif {[string compare $cdf_file "cdf/CDF_data-mining.tcl"] == 0} {
-    set repNumFile "cdf/repnum-data-[expr $equalpath_num-1]-$load.dat"
+    set repNumFile "cdf/repnum-data-[expr $equalpath_num-1]-0.1.dat"
 }
 set load_dir "rndnum"
 set cs_pair_file  "$load_dir/cs_pair-$sim_end-$host_num-$seed1.txt"
