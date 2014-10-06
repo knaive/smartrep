@@ -106,12 +106,11 @@ def make_dir(args):
 concurrent_process_num = 16
 topo = 0
 workload_type = 1
-# run = [1, 2, 3, 4, 5]
-run = [1, 2]
-sim_end = 30
+run = [1, 2, 3, 4, 5]
+sim_end = 3000
 load = ["0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"]
 # when repflow_num > port_num/2-1, smartRep is enabled
-repflow_num = [0, 1]
+repflow_num = [0, 1, 4]
 routing_method = [0, 1]
 
 # 0 indicates tcp-Newreno
@@ -137,7 +136,7 @@ tor_num = 9
 spine_num = 4
 
 # for fat-tree
-port_num = 4
+port_num = 10
 
 link_rate = 10000
 link_delay = 0.0000002
