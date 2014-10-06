@@ -1,235 +1,254 @@
 nohup: ignoring input
-Simuation 30-0.5-0-0 starts!
+Simuation 30-0.7-0-0 starts!
 
-    simulate(args[i])
-  File "run.pTraceback (most recent call last):
-imulate(args[    simu    fd = open(log_  File "run.  File "run.py", line 68,     IOErroren(lofd = open(log_file, 'a+')
-        IOErroren(log_file, 'a+')
-[E[Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.6-0-0.lo: 
-Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.8-0-0.log'
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.2-0-0.log'
-Simuation 30-0.6-1-0 starts!
+Simulation 30-0.7-0-0 finished in 6 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-Simuation 30-0.3-1-0 starts!
+Simuation 30-0.3-0-0 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-        simulate(args[i])
-IOError  File "run.py", line 68, in simulate
-: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.6-1-0.log'
-    simulate(args[i])
-  Fifd = open(log_file, 'a+')
-    fd = open(log_file, 'a+')
-IOError: : [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.2-1-0.log'
+Simulation 30-0.3-0-0 finished in 6 secnods
+
+Simuation 30-0.8-0-0 starts!
+
+Simulation 30-0.8-0-0 finished in 6 secnods
+
+Simuation 30-0.4-0-0 starts!
+
+Simulation 30-0.4-0-0 finished in 6 secnods
+
+Simuation 30-0.6-0-0 starts!
+
+Simulation 30-0.6-0-0 finished in 6 secnods
+
+Simuation 30-0.2-0-0 starts!
+
+Simulation 30-0.2-0-0 finished in 7 secnods
+
 Simuation 30-0.4-1-0 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.4-1-0.log'
+Simulation 30-0.4-1-0 finished in 7 secnods
+
+Simuation 30-0.5-0-0 starts!
+
+Simulation 30-0.5-0-0 finished in 9 secnods
+
+Simuation 30-0.3-1-0 starts!
+
+Simulation 30-0.3-1-0 finished in 9 secnods
+
 Simuation 30-0.5-1-0 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  Fisimulate(args[i])
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.5-1-0.log'
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.7-1-0.log'
-Simuation 30-0.1-1-0 starts!
+Simulation 30-0.5-1-0 finished in 9 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.1-1-0.log'
+Simuation 30-0.2-1-0 starts!
+
+Simulation 30-0.2-1-0 finished in 10 secnods
+
+Simuation 30-0.1-0-0 starts!
+
+Simulation 30-0.1-0-0 finished in 10 secnods
+
 Simuation 30-0.8-1-0 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.8-1-0.log'
-Simuation 30-0.2-2-0 starts!
+Simulation 30-0.8-1-0 finished in 10 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.2-2-0.log'
-Simuation 30-0.7-2-0 starts!
+Simuation 30-0.7-1-0 starts!
 
-Traceback (most recent call last):
-Simuation 30-0.3-2-0 starts!
+Simulation 30-0.7-1-0 finished in 10 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  Fisimulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.7-2-0.log'
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.3-2-0.log'
-Simuation 30-0.5-2-0 starts!
+Simuation 30-0.6-1-0 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-  File "run.py", line 181, in <module>
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.5-2-0.log'
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.1-2-0.log'
-Simuation 30-0.8-2-0 starts!
+Simulation 30-0.6-1-0 finished in 10 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.8-2-0.log'
-Simuation 30-0.4-2-0 starts!
+Simuation 30-0.1-1-0 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.4-2-0.log'
-Simuation 30-0.6-2-0 starts!
+Simulation 30-0.1-1-0 finished in 11 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.6-2-0.log'
-Simuation 30-0.1-3-0 starts!
+Simuation 30-0.2-0-1 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: Simuation 30-0.2-3-0 starts!
+Simulation 30-0.2-0-1 finished in 6 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    Simuation 30-0.3-3-0 starts!
+Simuation 30-0.8-0-1 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-IOError    : [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.2-3-0.log'
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-  File "run.py", line 181, in <module>
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.3-3-0.log'
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.4-3-0.log'
-Simuation 30-0.7-3-0 starts!
+Simulation 30-0.8-0-1 finished in 6 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-Simuation 30-0.5-3-0 starts!
+Simuation 30-0.6-1-1 starts!
 
-Traceback (most recent call last):
-      File "run.py", line 181, in <module>
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-    : [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.7-3-0.log'
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.5-3-0.log'
-Simuation 30-0.8-3-0 starts!
+Simulation 30-0.6-1-1 finished in 7 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.8-3-0.log'
-Simuation 30-0.6-3-0 starts!
+Simuation 30-0.5-1-1 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.6-3-0.log'
-Simuation 30-0.1-4-0 starts!
+Simulation 30-0.5-1-1 finished in 7 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.1-4-0.log'
-Simuation 30-0.3-4-0 starts!
+Simuation 30-0.7-1-1 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.3-4-0.log'
-Simuation 30-0.5-4-0 starts!
+Simulation 30-0.7-1-1 finished in 9 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-Simuation 30-0.4-4-0 starts!
+Simuation 30-0.4-0-1 starts!
 
-      File "run.py", line 181, in <module>
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-Simuation 30-0.2-4-0 starts!
+Simulation 30-0.4-0-1 finished in 10 secnods
 
-Traceback (most recent call last):
-  File "run.py", line : [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.5-4-0.log'
-  File "run.py", line 68, in simulate
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-IOError    fd[Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.4-4-0.log'
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.2-4-0.log'
-Simuation 30-0.7-4-0 starts!
+Simuation 30-0.6-0-1 starts!
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.7-4-0.log'
-Simuation 30-0.6-4-0 starts!
+Simulation 30-0.6-0-1 finished in 10 secnods
 
-Traceback (most recent call last):
-  File "run.py", line 181, in <module>
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-Simuation 30-0.8-4-0 starts!
+Simuation 30-0.1-0-1 starts!
 
-IOError  File "run.py", line 181, in <module>
-: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.6-4-0.log'
-    simulate(args[i])
-  File "run.py", line 68, in simulate
-    fd = open(log_file, 'a+')
-IOError: [Errno 2] No such file or directory: '/home/wfg/Desktop/stat-30-data/stat0-data-30/log1-30-0-data/30-0.8-4-0.log'
+Simulation 30-0.1-0-1 finished in 10 secnods
+
+Simuation 30-0.3-0-1 starts!
+
+Simulation 30-0.3-0-1 finished in 10 secnods
+
+Simuation 30-0.1-1-1 starts!
+
+Simulation 30-0.1-1-1 finished in 10 secnods
+
+Simuation 30-0.3-1-1 starts!
+
+Simulation 30-0.3-1-1 finished in 10 secnods
+
+Simuation 30-0.7-0-1 starts!
+
+Simulation 30-0.7-0-1 finished in 11 secnods
+
+Simuation 30-0.5-0-1 starts!
+
+Simulation 30-0.5-0-1 finished in 11 secnods
+
+Simuation 30-0.8-1-1 starts!
+
+Simulation 30-0.8-1-1 finished in 11 secnods
+
+Simuation 30-0.4-1-1 starts!
+
+Simulation 30-0.4-1-1 finished in 11 secnods
+
+Simuation 30-0.2-1-1 starts!
+
+Simulation 30-0.2-1-1 finished in 11 secnods
+
+Simuation 30-0.8-0-0 starts!
+
+Simulation 30-0.8-0-0 finished in 7 secnods
+
+Simuation 30-0.2-0-0 starts!
+
+Simulation 30-0.2-0-0 finished in 7 secnods
+
+Simuation 30-0.6-0-0 starts!
+
+Simulation 30-0.6-0-0 finished in 7 secnods
+
+Simuation 30-0.6-1-0 starts!
+
+Simulation 30-0.6-1-0 finished in 7 secnods
+
+Simuation 30-0.7-0-0 starts!
+
+Simulation 30-0.7-0-0 finished in 9 secnods
+
+Simuation 30-0.1-0-0 starts!
+
+Simulation 30-0.1-0-0 finished in 9 secnods
+
+Simuation 30-0.4-0-0 starts!
+
+Simulation 30-0.4-0-0 finished in 9 secnods
+
+Simuation 30-0.5-0-0 starts!
+
+Simulation 30-0.5-0-0 finished in 10 secnods
+
+Simuation 30-0.3-0-0 starts!
+
+Simulation 30-0.3-0-0 finished in 10 secnods
+
+Simuation 30-0.7-1-0 starts!
+
+Simulation 30-0.7-1-0 finished in 10 secnods
+
+Simuation 30-0.3-1-0 starts!
+
+Simulation 30-0.3-1-0 finished in 11 secnods
+
+Simuation 30-0.5-1-0 starts!
+
+Simulation 30-0.5-1-0 finished in 11 secnods
+
+Simuation 30-0.8-1-0 starts!
+
+Simulation 30-0.8-1-0 finished in 11 secnods
+
+Simuation 30-0.2-1-0 starts!
+
+Simulation 30-0.2-1-0 finished in 11 secnods
+
+Simuation 30-0.1-1-0 starts!
+
+Simulation 30-0.1-1-0 finished in 11 secnods
+
+Simuation 30-0.8-0-1 starts!
+
+Simulation 30-0.8-0-1 finished in 7 secnods
+
+Simuation 30-0.4-1-1 starts!
+
+Simulation 30-0.4-1-1 finished in 7 secnods
+
+Simuation 30-0.3-1-1 starts!
+
+Simulation 30-0.3-1-1 finished in 7 secnods
+
+Simuation 30-0.1-1-1 starts!
+
+Simulation 30-0.1-1-1 finished in 8 secnods
+
+Simuation 30-0.2-0-1 starts!
+
+Simulation 30-0.2-0-1 finished in 10 secnods
+
+Simuation 30-0.5-1-1 starts!
+
+Simulation 30-0.5-1-1 finished in 10 secnods
+
+Simuation 30-0.7-1-1 starts!
+
+Simulation 30-0.7-1-1 finished in 11 secnods
+
+Simuation 30-0.5-0-1 starts!
+
+Simulation 30-0.5-0-1 finished in 11 secnods
+
+Simuation 30-0.6-0-1 starts!
+
+Simulation 30-0.6-0-1 finished in 11 secnods
+
+Simuation 30-0.4-0-1 starts!
+
+Simulation 30-0.4-0-1 finished in 11 secnods
+
+Simuation 30-0.7-0-1 starts!
+
+Simulation 30-0.7-0-1 finished in 11 secnods
+
+Simuation 30-0.8-1-1 starts!
+
+Simulation 30-0.8-1-1 finished in 11 secnods
+
+Simuation 30-0.3-0-1 starts!
+
+Simulation 30-0.3-0-1 finished in 11 secnods
+
+Simuation 30-0.2-1-1 starts!
+
+Simulation 30-0.2-1-1 finished in 12 secnods
+
+Simuation 30-0.1-0-1 starts!
+
+Simulation 30-0.1-0-1 finished in 12 secnods
+
+Simuation 30-0.6-1-1 starts!
+
+Simulation 30-0.6-1-1 finished in 12 secnods
+
+All simulations done in 45 seconds

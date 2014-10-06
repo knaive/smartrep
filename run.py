@@ -44,7 +44,7 @@ def simulate(args):
     seed1, seed2, seed3 = get_seed(run)
 
     output_dir = "/home/wfg/Desktop/stat-%d-%s/stat%d-%s-%d"\
-        % (sim_end, type,  rm, type, sim_end)
+        % (sim_end, type, run, type, sim_end)
     trace_dir = "%s/trace%d-%d-%d-%s"\
         % (output_dir, run, sim_end, rm, type)
 
@@ -55,7 +55,7 @@ def simulate(args):
 
     begin = commands.getoutput("date +%s")
     print "Simuation %d-%s-%d-%d starts!\n" % (sim_end, load, repflow_num, rm)
-    args = "ns build.tcl %d %d %d %d %d %s %d %d %d %d %d %d %d %s %d %d %d %s %d %d %d %d >%s" \
+    args = "ns build.tcl %d %d %d %d %d %s %d %d %d %d %d %d %d %s %d %d %d %s %d %d %d %d >%s 2>&1" \
         % (sim_end, link_rate, link_delay, host_delay, queueSize, load,
            spt, tor_num, spine_num, port_num, rm, repflow_num, miceflow_thresh,
            trace_file, seed1, seed2, seed3, workload, meanFlowSize, topo,
@@ -65,7 +65,7 @@ def simulate(args):
     end = commands.getoutput("date +%s")
     dur = int(end) - int(begin)
 
-    fd = open(log_file, 'a+')
+    fd = open(log_file, 'a')
     fd.write("Simulation %d-%s-%d-%d finished in %d secnods\n" % (
         sim_end, load, repflow_num, rm, dur))
     print "Simulation %d-%s-%d-%d finished in %d secnods\n" % (
@@ -103,7 +103,7 @@ def make_dir(args):
     commands.getoutput(cmd)
 
 
-concurrent_process_num = 8
+concurrent_process_num = 16
 topo = 0
 workload_type = 1
 # run = [1, 2, 3, 4, 5]
@@ -137,7 +137,7 @@ tor_num = 9
 spine_num = 4
 
 # for fat-tree
-port_num = 6
+port_num = 4
 
 link_rate = 10000
 link_delay = 0.0000002
@@ -180,11 +180,13 @@ while i < len(args):
         pid = os.fork()
         if pid == 0:
             simulate(args[i])
+            exit(0)
         else:
             pids.append(pid)
         i = i+1
-    for pid in pids:
-        os.wait()
+    if pid != 0:
+        for pid in pids:
+            os.waitpid(pid, 0)
 
 dur = int(commands.getoutput('date +%s'))-int(beg)
 print "All simulations done in %d seconds" % dur
