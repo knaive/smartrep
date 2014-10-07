@@ -186,6 +186,7 @@ while i < len(args):
     if pid != 0:
         for pid in pids:
             os.waitpid(pid, 0)
+    print "%f%% finished" % (i*100.0/len(args))
 
 dur = int(commands.getoutput('date +%s'))-int(beg)
 print "All simulations done in %d seconds" % dur
