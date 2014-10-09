@@ -14,7 +14,7 @@
 
 #define THREAD_NUM 22
 
-int port_beg = 1025, port_end = 65000;
+int port_beg, port_end;
 int pod, sw, host;
 double num = 0, eq_num16 = 0, eq_num32 = 0;
 unsigned int R16 = 0, R32 = 0;
@@ -147,25 +147,23 @@ int main(int argc, char *argv[])
     printf("pack(2)\n");
 #endif
 
-    if (argc != 3) {
+    if (argc != 4) {
         printf("wrong arguments\n");
         exit(1);
     }
     int port_num = atoi(argv[1]);
     int k = port_num/2;
-    int flag = atoi(argv[2]);
+    port_beg = atoi(argv[2]);
+    port_end = atoi(argv[3]);
     pod = port_num;
     sw = port_num/2;
     host = port_num/2+2;
-    flag = 0;
 
     printf("sizeof(ipaddr)=%d\n",sizeof(tuple));
     R16 = (((unsigned short)(-1))/k+1);
     R32 = (((unsigned int)(-1))/k+1);
     printf("k = %d\n", k);
     printf("R16: %u, R32: %u\n", R16, R32);
-
-    if (flag) return 0;
 
     int ret = 0, i, step = (port_end-port_beg)/THREAD_NUM;
     pthread_t ids[THREAD_NUM];

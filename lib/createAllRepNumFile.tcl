@@ -1,7 +1,7 @@
 source smartRep.tcl
 
-set repLim 20
-set percent 0.03
+set repLim 4
+set percent 0.02
 set prob(1) 0.1
 set prob(2) 0.2
 set prob(3) 0.3

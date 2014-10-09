@@ -43,7 +43,7 @@ set load_type [lindex $lst 2]
 
 set len [llength $lst]
 set out_topdir "/home/wfg/plot/plot-$sim_end-$load_type"
-for {set i 4} {$i < $len} {incr i} {
+for {set i 3} {$i < $len} {incr i} {
     set out_topdir "$out_topdir-[lindex $lst $i]"
 }
 for {set i 1} {$i < $argc} {incr i} {

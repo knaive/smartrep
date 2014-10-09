@@ -26,15 +26,15 @@ def create_workload(run, load):
         print "workload creation failed!"
 
 
-# list args = (run, rm, repflow_num, load, smartRep, DCTCP)
+# list args = (run, repflow_num, rm, load, smartRep, DCTCP)
 def simulate(args):
     global sim_end, link_rate, link_delay, host_delay, queueSize
     global spt, tor_num, spine_num, port_num, miceflow_thresh
     global workload, meanFlowSize, topo, type
 
     run = args[0]
-    rm = args[1]
-    repflow_num = args[2]
+    repflow_num = args[1]
+    rm = args[2]
     load = args[3]
     DCTCP = args[4]
     smartRep = 0
@@ -79,7 +79,7 @@ def make_dir(args):
     global workload, meanFlowSize, topo, type
 
     run = args[0]
-    rm = args[1]
+    rm = args[2]
     # repflow_num = args[2]
     # load = args[3]
     # DCTCP = args[4]
@@ -110,8 +110,8 @@ run = [1, 2, 3, 4, 5]
 sim_end = 3000
 load = ["0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"]
 # when repflow_num > port_num/2-1, smartRep is enabled
-repflow_num = [0, 1, 4]
-routing_method = [0, 1]
+# each pair in repnum_rm = (repflow_num, routing_method)
+repnum_rm = [(0, 0), (1, 0), (1, 1), (4, 0), (5, 0), (5, 1)]
 
 # 0 indicates tcp-Newreno
 # 1 indicates DCTCP
@@ -154,11 +154,10 @@ for r in run:
 
 args = []
 for r in run:
-    for rm in routing_method:
-        for repnum in repflow_num:
+    for pair in repnum_rm:
+        for tcp in tcp_type:
             for l in load:
-                for tcp in tcp_type:
-                    args.append([r, rm, repnum, l, tcp])
+                    args.append([r, pair[0], pair[1], tcp, l])
 
 # make dirs before any process spawned
 for arg in args:
@@ -186,7 +185,7 @@ while i < len(args):
     if pid != 0:
         for pid in pids:
             os.waitpid(pid, 0)
-    print "%f%% finished" % (i*100.0/len(args))
+    print "%d/%d finished" % (i, len(args))
 
 dur = int(commands.getoutput('date +%s'))-int(beg)
 print "All simulations done in %d seconds" % dur

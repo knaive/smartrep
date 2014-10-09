@@ -1,4 +1,4 @@
-all : test find_cycle mt_test
+all : find_cycle mt_test
 .PHONY : all
 find_cycle : crc.o find_cycle.o
 	cc -o find_cycle crc.o find_cycle.o -g

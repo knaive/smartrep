@@ -190,8 +190,8 @@ proc plot {dir sim_end lst} {
                 }
         }
 
-        set pointsize 1.2
-        set linewidth 3
+        set pointsize 2.5
+        set linewidth 5
         set fontsize 25
 
         set script "set term eps enhanced color solid font 'Times-New-Roman,$fontsize'
