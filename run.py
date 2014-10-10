@@ -103,15 +103,15 @@ def make_dir(args):
     commands.getoutput(cmd)
 
 
-concurrent_process_num = 16
+concurrent_process_num = 24
 topo = 0
-workload_type = 1
+workload_type = 0
 run = [1, 2, 3, 4, 5]
 sim_end = 3000
 load = ["0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"]
 # when repflow_num > port_num/2-1, smartRep is enabled
 # each pair in repnum_rm = (repflow_num, routing_method)
-repnum_rm = [(0, 0), (1, 0), (1, 1), (4, 0), (5, 0), (5, 1)]
+repnum_rm = [(5, 0), (5, 1), (0, 0), (1, 0), (1, 1), (2, 0), (3, 0), (4, 0)]
 
 # 0 indicates tcp-Newreno
 # 1 indicates DCTCP
@@ -136,7 +136,7 @@ tor_num = 9
 spine_num = 4
 
 # for fat-tree
-port_num = 10
+port_num = 4
 
 link_rate = 10000
 link_delay = 0.0000002
