@@ -26,7 +26,7 @@ proc create_cs_pair {S flows_maxnum cs_pair_file rands} {
 }
 
 # generate interval and flow size , then write them into a file
-proc create_interval_size {flows_maxnum avg_inter_arrival interval_size_file cdffile s1 s2} {
+proc create_interval_size {flows_maxnum avg_inter_arrival interval_size_file cdffile s1 s2 load_type} {
         puts "create_interval_size\n"; flush stdout
         global load link_rate meanFlowSize 
 
@@ -38,48 +38,21 @@ proc create_interval_size {flows_maxnum avg_inter_arrival interval_size_file cdf
 
         set rng2 [new RNG]
         $rng2 seed $s2
-        set flow_size [new RandomVariable/Empirical]
-        $flow_size use-rng $rng2
-        $flow_size set interpolation_ 2
-        $flow_size loadCDF $cdffile
+        if {$load_type == 2} {
+            set flow_size [new RandomVariable/Pareto]
+            $flow_size use-rng $rng2
+            $flow_size set avg_ [expr $meanFlowSize/1500]
+            $flow_size set shape_ 1.05
+        } else {
+            set flow_size [new RandomVariable/Empirical]
+            $flow_size use-rng $rng2
+            $flow_size set interpolation_ 2
+            $flow_size loadCDF $cdffile
+        }
 
         set fd [open $interval_size_file w]
         for {set i 0} {$i < $flows_maxnum} {incr i} {
                 puts $fd "[$flow_intval value] [expr round ([$flow_size value])]"
-        }
-        close $fd
-}
-proc create_interval_size1 {flows_maxnum interval_size_file cdffile s1 s2} {
-        puts "create_interval_size\n"; flush stdout
-        global load link_rate meanFlowSize lambda
-
-        #puts "FlowSize: Pareto with mean = $meanFlowSize, shape = $paretoShape"
-        set rng2 [new RNG]
-        $rng2 seed $s2
-        set flow_size [new RandomVariable/Empirical]
-        $flow_size use-rng $rng2
-        $flow_size set interpolation_ 2
-        $flow_size loadCDF $cdffile
-        #compute meanFlowSize
-        set meanFlowSize 0
-        for {set i 0} {$i < $flows_maxnum} {incr i} {
-                set flowsiz($i) [expr round ([$flow_size value])]
-                set meanFlowSize [expr $meanFlowSize + $flowsiz($i)]
-        }
-        set meanFlowSize [expr $meanFlowSize/$flows_maxnum]
-        
-
-        set lambda [expr ($link_rate*$load*1000000000)/($meanFlowSize*8.0/1460*1500)]
-        set rng1 [new RNG]
-        $rng1 seed $s1
-        set flow_intval [new RandomVariable/Exponential]
-        $flow_intval use-rng $rng1
-        $flow_intval set avg_ [expr 1.0/$lambda]
-
-
-        set fd [open $interval_size_file w]
-        for {set i 0} {$i < $flows_maxnum} {incr i} {
-                puts $fd "[$flow_intval value] $flowsiz($i)"
         }
         close $fd
 }

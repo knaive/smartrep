@@ -10,9 +10,9 @@ import commands
 # cmd = './mt_test %d 0 >%s 2>&1' % (k, logfile)
 # commands.getoutput(cmd)
 
-run_beg = 4
+run_beg = 20
 step = 5000
-run = range(run_beg, 10, 1)
+run = range(run_beg, 40, 1)
 for r in run:
     k = 10
     port_beg = 1025+(r-1)*step

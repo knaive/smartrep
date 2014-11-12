@@ -1,0 +1,8 @@
+srcip,dstip,srcport,dstport,proto
+pack(1)
+sizeof(ipaddr)=13
+k = 5
+R16: 13108, R32: 858993460
+num:69948582000.000000
+69948582000.000000, 18190546094.000000, 64994015249.000000, CRC16: 0.260056, CRC32: 0.929168
+Simulation Finished!

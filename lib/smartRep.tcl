@@ -1,5 +1,5 @@
 # generate a flow size file "outfile" according cdf file "filenm"
-proc createFlowSize {filenm num round outfile} {
+proc createEmpiricalFlowSize {filenm num round outfile} {
     set fd [open $outfile w]
 
     for {set i 0} {$i < $round} {incr i} {
@@ -10,6 +10,25 @@ proc createFlowSize {filenm num round outfile} {
         $flowsize set interpolation_ 2
         $flowsize loadCDF $filenm
         
+        for {set j 0} {$j < $num} {incr j} {
+            puts $fd "[expr round ([$flowsize value])]"
+        }
+    }
+
+    close $fd
+}
+
+proc createParetoFlowSize {num round meanFlowSize shape outfile} {
+    set fd [open $outfile w]
+
+    for {set i 0} {$i < $round} {incr i} {
+        set rng [new RNG]
+        $rng seed [expr {10+round(rand()*20000)}]
+        set flowsize [new RandomVariable/Pareto]
+        $flowsize use-rng $rng
+        $flowsize set avg_ [expr $meanFlowSize]
+        $flowsize set shape_ $shape
+
         for {set j 0} {$j < $num} {incr j} {
             puts $fd "[expr round ([$flowsize value])]"
         }

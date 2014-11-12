@@ -126,8 +126,8 @@ if workload_type == 1:
     meanFlowSize = 5117*1460
     type = "data"
 elif workload_type == 2:
-    workload = "Pareto"
-    meanFlowSize = 100*1460
+    workload = "pareto"
+    meanFlowSize = 5117*1460
     type = "pareto"
 
 # for leaf-spine
