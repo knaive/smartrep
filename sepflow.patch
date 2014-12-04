@@ -1,0 +1,453 @@
+diff -ru ns-allinone-2.35/ns-2.35/classifier/classifier.cc ns-2.35/classifier/classifier.cc
+--- ns-allinone-2.35/ns-2.35/classifier/classifier.cc	2010-03-08 13:54:49.000000000 +0800
++++ ns-2.35/classifier/classifier.cc	2014-06-24 18:12:29.812763563 +0800
+@@ -59,6 +59,11 @@
+ 	bind("offset_", &offset_);
+ 	bind("shift_", &shift_);
+ 	bind("mask_", &mask_);
++
++    // added by wfg
++    nid_ = -1;
++    bind("nid_", &nid_);
++    next_hops_ = NULL;
+ }
+ 
+ int Classifier::classify(Packet *p)
+@@ -98,6 +103,14 @@
+ 	for (int i = 0; i < n; ++i)
+ 		slot_[i] = old[i];
+ 	delete [] old;
++
++    // added by wfg
++    int *oldh = next_hops_;
++    next_hops_ = new int [nslot_];
++    memset(next_hops_, 0, nslot_ * sizeof(int));
++    for (int i = 0; i < n; ++i)
++        next_hops_[i] = oldh[i];
++    delete [] oldh;
+ }
+ 
+ 
+diff -ru ns-allinone-2.35/ns-2.35/classifier/classifier.h ns-2.35/classifier/classifier.h
+--- ns-allinone-2.35/ns-2.35/classifier/classifier.h	2010-03-08 13:54:49.000000000 +0800
++++ ns-2.35/classifier/classifier.h	2014-06-24 18:12:08.892762895 +0800
+@@ -75,6 +75,11 @@
+ 	virtual void set_table_size(int level, int nn);
+ 
+ 	int allocPort (NsObject *);	
++
++    // added by wfg
++    int nid_;
++    int *next_hops_;
++
+ protected:
+ 	virtual int getnxt(NsObject *);
+ 	virtual int command(int argc, const char*const* argv);
+diff -ru ns-allinone-2.35/ns-2.35/classifier/classifier-mpath.cc ns-2.35/classifier/classifier-mpath.cc
+--- ns-allinone-2.35/ns-2.35/classifier/classifier-mpath.cc	2005-08-26 02:58:01.000000000 +0800
++++ ns-2.35/classifier/classifier-mpath.cc	2014-06-25 16:56:38.339382728 +0800
+@@ -50,21 +50,179 @@
+ #endif
+ 
+ #include "classifier.h"
++#include "simulator.h"
++#include "node.h"
++#include "ip.h"
+ 
+ class MultiPathForwarder : public Classifier {
+ public:
+-	MultiPathForwarder() : ns_(0) {} 
+-	virtual int classify(Packet*) {
+-		int cl;
+-		int fail = ns_;
+-		do {
+-			cl = ns_++;
+-			ns_ %= (maxslot_ + 1);
+-		} while (slot_[cl] == 0 && ns_ != fail);
+-		return cl;
++	MultiPathForwarder() : ns_(0), perflow_(0), total_chances_(4), collision_chances_(2) {
++        bind("perflow_", &perflow_);
++        bind("enable_repflow_", &enable_repflow_);
++        bind("total_chances_", &total_chances_);
++        bind("collision_chances_", &collision_chances_);
++        bind("enable_sepflow_", &enable_sepflow_);
++        bind("sep_ratio_", &sep_ratio_);
++
++        flag = 1;
++    } 
++	virtual int classify(Packet* p) {
++
++        if (flag) {
++            init();
++            flag--;
++        }
++
++        if (perflow_) {
++            union hkey {
++                struct { nsaddr_t dst; } Dst;
++                struct { nsaddr_t src,dst; } SrcDst;
++                struct {
++                    nsaddr_t src,dst;
++                    int fid;
++                } SrcDstFid;
++            };
++            hkey buf_;
++            hdr_ip* h = hdr_ip::access(p);
++            buf_.SrcDstFid.src = mshift(h->saddr());
++            buf_.SrcDstFid.dst = mshift(h->daddr());
++            buf_.SrcDstFid.fid = h->flowid();
++            if (h->replicated() && buf_.SrcDstFid.fid%total_chances_ < collision_chances_)
++                buf_.SrcDstFid.fid--;
++
++            char* bufString = (char*)&buf_;
++            unsigned int ms_ = (unsigned int) HashString(bufString, sizeof(buf_.SrcDstFid));
++
++            if(enable_sepflow_) {
++                printf("sepflow:%d for %d in flow(%d), is_mice(%d)\n", sepflow(ms_, h->is_mice()), hdr_cmn::access(p)->uid(), h->flowid(),h->is_mice());
++            }
++
++            ms_ %= (maxslot_ + 1);
++            return find_slot(ms_, maxslot_, 0);
++        } else {
++            int cl;
++            int fail = ns_;
++            do {
++                cl = ns_++;
++                ns_ %= (maxslot_ + 1);
++            } while (slot_[cl] == 0 && ns_ != fail);
++            return cl;
++        }
+ 	}
+ private:
+ 	int ns_;
++
++    // Mohamamd : adding support for perflow multipath
++    int perflow_;
++    int total_chances_;
++    int collision_chances_;
++
++    static unsigned int HashString(register const char* bytes, int length)
++    {
++        register unsigned int result;
++        register int i;
++        result = 0;
++        for (i = 0; i < length; ++i) {
++            result += (result<<3) + *bytes++;
++        }
++        return result;
++    }
++
++    // added by wfg
++    int flag;
++    int enable_repflow_;
++    int enable_sepflow_;
++    int edge_;
++    double sep_ratio_;
++
++    void init()
++    {
++        for (int i = 0; i <= maxslot_; ++i)
++            next_hops_[i] = next_hop_id(i);
++
++        //debug
++        print_next_hops();
++        bubble_sort_slot();
++        printf("After sorting:\n");
++        for (int i = 0; i <= maxslot_; ++i)
++            next_hops_[i] = next_hop_id(i);
++        print_next_hops();
++
++        Simulator &sim = Simulator::instance();
++        Node* n = sim.get_node(nid_);
++        edge_ = n->edge_;
++        printf("node:%d,edge_:%d\n",nid_,edge_);
++    }
++
++    int next_hop_id(int slot)
++    {
++        if (slot<0 || slot>maxslot_) {
++            return -1;
++        }
++
++        NsObject *no = slot_[slot];
++        while(no->target()) no = no->target();
++
++        Classifier *cls = (Classifier *)no;
++        assert(cls!=NULL);
++
++        return cls->nid_;
++    }
++
++    void print_next_hops()
++    {
++        printf("\n%d: ", nid_);
++        for (int i = 0; i < maxslot_+1; ++i)
++            printf("%d-%d; ",i,next_hops_[i]);
++        printf("\n");
++    }
++
++    void bubble_sort_slot()
++    {
++        int j,len = maxslot_,count;
++        do {
++            count = 0;
++            for (j = 0; j < len; ++j) {
++                if (next_hops_[j]>next_hops_[j+1]) {
++                    int tmp = next_hops_[j];
++                    next_hops_[j] = next_hops_[j+1];
++                    next_hops_[j+1] = tmp;
++
++                    NsObject* no = slot_[j];
++                    slot_[j] = slot_[j+1];
++                    slot_[j+1] = no;
++
++                    count++;
++                }
++            }
++            len--;
++        } while(count);
++    }
++
++    int sepflow(unsigned hash_value, int is_mice)
++    {
++        int eleph_maxslot = int((1+maxslot_)*sep_ratio_)-1;
++        int slot = hash_value, maxslot = maxslot_-eleph_maxslot-1, start = eleph_maxslot+1;
++
++        if (!is_mice) {
++            maxslot = eleph_maxslot;
++            start = 0;
++        }
++        slot %= (maxslot+1);
++
++        return find_slot(slot, maxslot, start);
++    }
++
++    int find_slot(int slot, int maxslot, int start)
++    {
++        int fail = slot;
++        int cl;
++        do {
++            cl = slot++;
++            slot %= (maxslot+1);
++        } while(slot_[cl+start] == 0 && slot != fail);
++        return cl+start;
++    }
+ };
+ 
+ static class MultiPathClass : public TclClass {
+diff -ru ns-allinone-2.35/ns-2.35/common/agent.cc ns-2.35/common/agent.cc
+--- ns-allinone-2.35/ns-2.35/common/agent.cc	2010-03-08 13:54:49.000000000 +0800
++++ ns-2.35/common/agent.cc	2014-06-25 16:35:08.727341459 +0800
+@@ -86,6 +86,11 @@
+ 	delay_bind_init_one("flags_");
+ 	delay_bind_init_one("ttl_");
+ 	delay_bind_init_one("class_");
++    
++    // added by wfg
++    delay_bind_init_one("mice_");
++    delay_bind_init_one("replicated_");
++
+ 	Connector::delay_bind_init_all();
+ }
+ 
+@@ -101,6 +106,11 @@
+ 	if (delay_bind(varName, localName, "flags_", (int*)&flags_, tracer)) return TCL_OK;
+ 	if (delay_bind(varName, localName, "ttl_", &defttl_, tracer)) return TCL_OK;
+ 	if (delay_bind(varName, localName, "class_", (int*)&fid_, tracer)) return TCL_OK;
++    
++    // added by wfg
++    if (delay_bind(varName, localName, "mice_", (int*)&mice_, tracer)) return TCL_OK;
++    if (delay_bind(varName, localName, "replicated_", (int*)&replicated_, tracer)) return TCL_OK;
++
+ 	return Connector::delay_bind_dispatch(varName, localName, tracer);
+ }
+ 
+@@ -479,6 +489,10 @@
+ 	iph->prio() = prio_;
+ 	iph->ttl() = defttl_;
+ 
++    // added by wfg
++    iph->is_mice() = mice_;
++    iph->replicated() = replicated_;
++
+ 	hdr_flags* hf = hdr_flags::access(p);
+ 	hf->ecn_capable_ = 0;
+ 	hf->ecn_ = 0;
+diff -ru ns-allinone-2.35/ns-2.35/common/agent.h ns-2.35/common/agent.h
+--- ns-allinone-2.35/ns-2.35/common/agent.h	2011-08-27 03:26:39.000000000 +0800
++++ ns-2.35/common/agent.h	2014-06-25 16:33:45.423338792 +0800
+@@ -127,6 +127,10 @@
+ 	int flags_;			// for experiments (see ip.h)
+ 	int defttl_;			// default ttl for outgoing pkts
+ 
++    // added by wfg
++    int mice_;
++    int replicated_;
++
+ #ifdef notdef
+ 	int seqno_;		/* current seqno */
+ 	int class_;		/* class to place in packet header */
+diff -ru ns-allinone-2.35/ns-2.35/common/ip.h ns-2.35/common/ip.h
+--- ns-allinone-2.35/ns-2.35/common/ip.h	2006-02-22 21:32:23.000000000 +0800
++++ ns-2.35/common/ip.h	2014-06-25 16:38:50.359348554 +0800
+@@ -69,6 +69,10 @@
+ 	int		fid_;	/* flow id */
+ 	int		prio_;
+ 
++    // added by wfg
++    int mice_;
++    int replicated_;
++
+ 	static int offset_;
+ 	inline static int& offset() { return offset_; }
+ 	inline static hdr_ip* access(const Packet* p) {
+@@ -87,6 +91,10 @@
+ 	/* ipv6 fields */
+ 	int& flowid() { return (fid_); }
+ 	int& prio() { return (prio_); }
++
++    // added by wfg
++    int& is_mice() { return (mice_); }
++    int& replicated() { return (replicated_);}
+ };
+ 
+ #endif
+diff -ru ns-allinone-2.35/ns-2.35/common/node.cc ns-2.35/common/node.cc
+--- ns-allinone-2.35/ns-2.35/common/node.cc	2002-05-31 01:44:03.000000000 +0800
++++ ns-2.35/common/node.cc	2014-06-24 16:21:38.972550738 +0800
+@@ -104,12 +104,15 @@
+ 
+ Node::Node() : 
+ 	address_(-1), nodeid_ (-1), namChan_(0),
+-	rtnotif_(NULL),
++	rtnotif_(NULL), edge_(0),
+ #ifdef HAVE_STL
+ 	nixnode_(NULL),
+ #endif //HAVE_STL
+ 	energy_model_(NULL), location_(NULL)
+ {
++    // added by wfg
++    bind("edge_", &edge_);
++
+ 	LIST_INIT(&ifhead_);
+ 	LIST_INIT(&linklisthead_);
+ 	insert(&(Node::nodehead_)); // insert self into static list of nodes
+diff -ru ns-allinone-2.35/ns-2.35/common/node.h ns-2.35/common/node.h
+--- ns-allinone-2.35/ns-2.35/common/node.h	2002-05-31 01:44:03.000000000 +0800
++++ ns-2.35/common/node.h	2014-06-24 16:21:53.964551217 +0800
+@@ -164,6 +164,9 @@
+ 	void set_table_size(int nn);
+ 	void set_table_size(int level, int csize);
+ 
++    // added by wfg
++    int edge_;
++
+ protected:
+ 	LIST_ENTRY(Node) entry;  // declare list entry structure
+ 	int address_;
+diff -ru ns-allinone-2.35/ns-2.35/common/object.h ns-2.35/common/object.h
+--- ns-allinone-2.35/ns-2.35/common/object.h	2000-09-08 03:56:06.000000000 +0800
++++ ns-2.35/common/object.h	2014-06-24 18:11:04.156760822 +0800
+@@ -60,6 +60,10 @@
+ 	virtual int delay_bind_dispatch(const char *varName, const char *localName, TclObject *tracer);
+ 	inline int isdebug() const { return debug_; }
+ 	virtual void debug(const char *fmt, ...);
++
++    // added by wfg
++    virtual NsObject *target() {return NULL;}
++
+ protected:
+ 	virtual void reset();
+ 	void handle(Event*);
+diff -ru ns-allinone-2.35/ns-2.35/common/simulator.h ns-2.35/common/simulator.h
+--- ns-allinone-2.35/ns-2.35/common/simulator.h	2005-08-26 02:58:02.000000000 +0800
++++ ns-2.35/common/simulator.h	2014-06-25 15:10:44.035179387 +0800
+@@ -56,6 +56,7 @@
+ 
+ class ParentNode;
+ class RouteLogic;
++class Node;
+ 
+ class Simulator : public TclObject {
+ public:
+@@ -75,6 +76,10 @@
+ 	char *append_addr(int level, int *addr);
+ 	void alloc(int n);
+ 	void check(int n);
++
++    // added by wfg
++    Node* get_node(int id) { return (Node*)nodelist_[id]; }
++    //static Simulator* get_inst(){return instance_;}
+ 	
+ private:
+         ParentNode **nodelist_;
+diff -ru ns-allinone-2.35/ns-2.35/tcl/lib/ns-default.tcl ns-2.35/tcl/lib/ns-default.tcl
+--- ns-allinone-2.35/ns-2.35/tcl/lib/ns-default.tcl	2010-07-04 06:45:45.000000000 +0800
++++ ns-2.35/tcl/lib/ns-default.tcl	2014-06-25 16:37:15.175345508 +0800
+@@ -377,6 +377,17 @@
+ Classifier set mask_ 0xffffffff
+ Classifier set debug_ false
+ 
++# added by wfg
++Classifier set nid_ -1
++Classifier/MultiPath set perflow_ 0
++Classifier/MultiPath set enable_repflow_ 0
++Classifier/MultiPath set total_chances_ 0
++Classifier/MultiPath set collision_chances_ 0
++
++Classifier/MultiPath set enable_sepflow_ 0
++Classifier/MultiPath set sep_ratio_ 0.8
++
++
+ Classifier/Hash set default_ -1; # none
+ Classifier/Replicator set ignore_ 0
+ 
+@@ -551,6 +562,9 @@
+ Node set multiPath_ 0
+ Node set rtagent_port_ 255
+ 
++# added by wfg
++Node set edge_ 0
++
+ # setting port for diffusion application agent
+ Node set DIFFUSION_APP_PORT 254
+ 
+@@ -824,6 +838,10 @@
+ Agent set debug_ false
+ Agent set class_ 0
+ 
++# added by wfg
++Agent set mice_ 0
++Agent set replicated_ 0
++
+ ##Agent set seqno_ 0 now is gone
+ ##Agent set class_ 0 now is gone
+ 
+diff -ru ns-allinone-2.35/ns-2.35/tcl/lib/ns-node.tcl ns-2.35/tcl/lib/ns-node.tcl
+--- ns-allinone-2.35/ns-2.35/tcl/lib/ns-node.tcl	2001-11-06 14:16:21.000000000 +0800
++++ ns-2.35/tcl/lib/ns-node.tcl	2014-06-24 11:04:23.911941612 +0800
+@@ -352,6 +352,10 @@
+ 			# 3. install the mclassifier in the node classifier_
+ 			#
+ 			set mpathClsfr_($id) [new Classifier/MultiPath]
++
++            # added by wfg
++            $mpathClsfr_($id) set nid_ [$self id]
++
+ 			if {$routes_($id) > 0} {
+ 				assert "$routes_($id) == 1"
+ 				$mpathClsfr_($id) installNext \
+diff -ru ns-allinone-2.35/ns-2.35/tcl/lib/ns-rtmodule.tcl ns-2.35/tcl/lib/ns-rtmodule.tcl
+--- ns-allinone-2.35/ns-2.35/tcl/lib/ns-rtmodule.tcl	2005-09-16 11:05:43.000000000 +0800
++++ ns-2.35/tcl/lib/ns-rtmodule.tcl	2014-06-24 11:04:10.131941172 +0800
+@@ -138,6 +138,10 @@
+ 
+ 	$self instvar classifier_
+ 	set classifier_ [new Classifier/Hash/Dest 32]
++
++    # added by wfg
++    $classifier_ set nid_ [$node id]
++
+ 	$classifier_ set mask_ [AddrParams NodeMask 1]
+ 	$classifier_ set shift_ [AddrParams NodeShift 1]
+ 	# XXX Base should ALWAYS be the first module to be installed.
